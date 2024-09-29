@@ -11,12 +11,12 @@ import com.codingbee.snn4j.neural_network.MLP;
 import static java.lang.Runtime.getRuntime;
 
 public class Main {
-    static String networkPath = "src/main/resources/networks";
+    static String networkPath = "src/main/resources";
     static String trainingDataPath = "C:/Users/theco/IdeaProjects/ML/NUMBERS/json_one_training";
-    static String testingDataPath = "C:/Users/theco/IdeaProjects/ML/NUMBERS/json_one_testing";
+    static String testingDataPath = "C:/Users/theco/IdeaProjects/ML/NUMBERS/new_translation";
 
     public static void main(String[] args) throws Exception {
-        MLP network = new MLP(784, 10, new int[]{10, 10}, "digit_recognizer");
+        MLP network = new MLP(784, 10, new int[]{10, 10}, "digit_recognition_network");
         train(network);
         test(network);
         getRuntime().gc();
@@ -32,7 +32,7 @@ public class Main {
 
         System.out.println("Loading data");
         Dataset data = new Dataset();
-        data.loadData(trainingDataPath, DataFormat.JSON_TWO, 10);
+        data.loadData(trainingDataPath, DataFormat.JSON_ONE, 10);
         System.out.println("\n \n \n TRAINING: \n");
         network.train(data, 100, true, true);
 
@@ -43,7 +43,7 @@ public class Main {
         network.initNeuronsFromDir(networkPath);
 
         Dataset data = new Dataset();
-        data.loadData(testingDataPath, DataFormat.JSON_TWO, 10);
+        data.loadData(testingDataPath, DataFormat.JSON_ONE, 10);
 
         System.out.println("Correctness: " + network.getCorrectPercentage(data) + "%");
         System.out.println("Cost: " + network.calculateAverageCost(data.getInputData(), data.getExpectedResults()));
